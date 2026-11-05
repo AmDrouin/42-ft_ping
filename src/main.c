@@ -8,6 +8,11 @@ int main(int ac, char **av){
     parse_args(ac, av, &p);
     // printf("DEBUG-- HOST: %s, VERBOSE: %d\n", p.host, p.verbose);
     resolve_host(&p);
-    printf("DEBUG-- PING %s (%s): %d data bytes\n", p.host, p.ip_str, 56);
+    create_socket(&p);
+    printf("DEBUG-- PING %s (%s): %d data bytes", p.host, p.ip_str, 56);
+    if (p.verbose)
+        printf(", id 0x%04x = %u", p.id, p.id);
+    printf("\n");
+    close(p.sock);
     return(0);
 }
