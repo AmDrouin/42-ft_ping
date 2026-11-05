@@ -1,16 +1,43 @@
 #include "ft_ping.h"
 
-void parse_long_option(char *av, t_ping *p){
-    (void) av;
-    (void) p;
-}
-void parse_short_option(char *av, t_ping *p){
-    (void) av;
-    (void) p;
+static void print_help(){
+    printf("Usage: ping [OPTION...] HOST ...\n");
+    printf("Send ICMP ECHO_REQUEST packets to network hosts.\n");
+    printf(" -v, --verbose          verbose output\n");
+    printf(" -?, --help             give this help list\n");
+    exit(0);
 }
 
-void usage_error(char *msg){
-    (void) msg;
+static void usage_error(char *msg){
+    fprintf(stderr, "ft_ping: %s\n", msg);
+    fprintf(stderr, "Try 'ft_ping --help' or 'ft_ping --usage' for more information.\n");
+    exit(64);
+}
+
+static void parse_long_option(char *av, t_ping *p){
+    if(strcmp(av, "--help") == 0)
+        print_help();
+    else if (strcmp(av, "--verbose") == 0)
+        p->verbose = true;
+    else {
+        fprintf(stderr, "ft_ping: unrecognized option '%s'\n", av);
+        fprintf(stderr, "Try 'ft_ping --help' or 'ft_ping --usage' for more information.\n");
+        exit(64);
+    }
+}
+
+static void parse_short_option(char *av, t_ping *p){
+    for (int i = 1; av[i]; i++){
+        if (av[i] == 'v')
+            p->verbose = true;
+        else if (av[i] == '?')
+            print_help();
+        else {
+             fprintf(stderr, "ft_ping: invalid option -- '%c'\n", av[i]);
+            fprintf(stderr, "Try 'ft_ping --help' or 'ft_ping --usage' for more information.\n");
+            exit(64);
+        }
+    }
 }
 
 void parse_args(int ac, char **av, t_ping *p){

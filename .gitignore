@@ -1,3 +1,4 @@
 node_modules/
 objs/
 ft_ping
+git commit --amend --reset-author

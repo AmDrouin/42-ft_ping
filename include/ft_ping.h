@@ -14,8 +14,4 @@ typedef struct s_ping {
 
 
 void parse_args(int ac, char **av, t_ping *p);
-void parse_long_option(char *av, t_ping *p);
-void parse_short_option(char *av, t_ping *p);
-
-void usage_error(char *msg);
 #endif
