@@ -74,3 +74,11 @@ getaddrinfo tries, in order :
     2-/etc/host : a local file with name-to-IP. (we can find localhost <=> 127.0.0.1)
     3-Ask to a DNS (Domaine Name System) : only if the name is not found locally (DNS list can be found in /etc/resolv.conf)
 
+##ICMP Package
+
+octet :  0      1      2      3      4      5      6      7      8 ........... 23   24 ......... 63
+       ┌──────┬──────┬─────────────┬─────────────┬─────────────┬──────────────────┬───────────────┐
+       │ type │ code │  checksum   │ identifiant │  séquence   │ horodatage       │ remplissage   │
+       │  8   │  0   │  (calculé)  │   p->id     │  0, 1, 2…   │ (struct timeval) │               │
+       └──────┴──────┴─────────────┴─────────────┴─────────────┴──────────────────┴───────────────┘
+       └─────────────── en-tête ICMP : 8 octets ──────────────┘└────────── données : 56 octets ────┘
