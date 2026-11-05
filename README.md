@@ -60,3 +60,17 @@ Add a shortcut to `~/.ssh/config` on the host machine:
 ```
 You can then connect with `ssh ftping`.
 
+### Hostname resolution 
+
+Before sending anything, we need to turns what the user typed into a binary IPv4 address. The network only understands IP addresses so names must be translated first. 
+
+This is done by getaddrinfo(). It takes some flags to precise the search : AF_INET (IPV4), SOCK_RAW and IPPROTO_ICMP (only ICMP message). As the result, getaddrinfo allocates a linked list of struct addrinfo, one node per address found. A name can map to several addresses. ft_ping only uses the first node. As a consequencem ft_ping and a reference ping may show different IPs for the same name.
+In the node we can find the address in IPv4 format. 
+
+#### How the address is found
+
+getaddrinfo tries, in order :
+    1- Numeric address : if the text is alread an IP. 
+    2-/etc/host : a local file with name-to-IP. (we can find localhost <=> 127.0.0.1)
+    3-Ask to a DNS (Domaine Name System) : only if the name is not found locally (DNS list can be found in /etc/resolv.conf)
+
