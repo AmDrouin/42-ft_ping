@@ -74,7 +74,7 @@ getaddrinfo tries, in order :
     2-/etc/host : a local file with name-to-IP. (we can find localhost <=> 127.0.0.1)
     3-Ask to a DNS (Domaine Name System) : only if the name is not found locally (DNS list can be found in /etc/resolv.conf)
 
-##ICMP Package
+## ICMP Package
 
 octet :  0      1      2      3      4      5      6      7      8 ........... 23   24 ......... 63
        ┌──────┬──────┬─────────────┬─────────────┬─────────────┬──────────────────┬───────────────┐

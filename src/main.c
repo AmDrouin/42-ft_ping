@@ -13,6 +13,7 @@ int main(int ac, char **av){
     if (p.verbose)
         printf(", id 0x%04x = %u", p.id, p.id);
     printf("\n");
+    send_echo(&p);
     close(p.sock);
     return(0);
 }

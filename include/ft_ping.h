@@ -15,6 +15,12 @@
 #include <stdint.h>
 #include <errno.h>
 
+#include <netinet/ip_icmp.h>
+#include <sys/time.h>
+
+# define PACKET_SIZE 64
+# define DATA_SIZE 56
+
 
 typedef struct s_ping {
     char                    *host; //host argument
@@ -25,11 +31,29 @@ typedef struct s_ping {
 
     int                     sock; //socket raw
     uint16_t                id;
+
+    uint16_t                seq;//next sequence's nb
+    long                    sent;//nb packages send
 }   t_ping;
 
+// struct icmphdr{
+//     u_int8_t                type; //octet 0
+//     u_int8_t                code; //octet 1
+//     uint16_t                checksum;//octet2-3
+//     union {
+//         struct {
+//             uint16_t        id;//octet4-5
+//             uint16_t        sequence;//octet6-7
+//         } echo;
+//         uint32_t            gateway;
+//     } un;
+// };
 
-void    parse_args(int ac, char **av, t_ping *p);
-void    resolve_host(t_ping *p);
-void    create_socket(t_ping *p);
+
+void        parse_args(int ac, char **av, t_ping *p);
+void        resolve_host(t_ping *p);
+void        create_socket(t_ping *p);
+uint16_t    checksum(void *data, int len);
+void send_echo(t_ping *p);
 
 #endif
