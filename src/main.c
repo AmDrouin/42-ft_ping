@@ -16,7 +16,7 @@ int main(int ac, char **av){
     //need to be in the loop
     send_echo(&p);
     //
-    run_loop(p);
+    run_loop(&p);
     close(p.sock);
     return(0);
 }
