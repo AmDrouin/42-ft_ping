@@ -14,7 +14,7 @@ int main(int ac, char **av){
         printf(", id 0x%04x = %u", p.id, p.id);
     printf("\n");
     //need to be in the loop
-    send_echo(&p);
+    //send_echo(&p);
     //
     run_loop(&p);
     close(p.sock);
