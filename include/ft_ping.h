@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include <netinet/in.h>
+#include <netinet/ip.h>
 #include <netdb.h>
 #include <arpa/inet.h>
 
@@ -34,6 +35,8 @@ typedef struct s_ping {
 
     uint16_t                seq;//next sequence's nb
     long                    sent;//nb packages send
+
+    long                    received; //how many answer
 }   t_ping;
 
 // struct icmphdr{

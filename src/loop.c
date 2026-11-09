@@ -9,6 +9,20 @@ static double get_time(){
     return (tv.tv_sec * 1000.0 + tv.tv_usec / 1000.0);
 }
 
+static void handle_packet(t_ping *p, char *buf, ssize_t n, struct sockaddr_in *from){
+    struct  iphdr *ip = (struct iphdr *)buf;
+    int ip_len = ip->ihl * 4;
+    if(n < ip_len + (ssize_t)sizeof(struct icmphdr))
+        return;
+    struct icmphdr *icmp = (struct icmphdr *)(buf+ip_len);
+    if (icmp->type != ICMP_ECHOREPLY)
+        return;
+    if(ntohs(icmp->un.echo.id) != p->id)
+        return;
+    printf("DEBUG-- REPLY from %s seq=%u ttl=%d\n",inet_ntoa(from->sin_addr), ntohs(icmp->un.echo.sequence), ip->ttl);
+}
+
+
 static void read_package(t_ping *p){
     char buf[1024];
     struct sockaddr_in  from;
@@ -19,7 +33,10 @@ static void read_package(t_ping *p){
     n = recvfrom(p->sock, buf, sizeof(buf), 0, (struct sockaddr *)&from, &from_len);
     if(n < 0)
         return;
-    printf("reçu %zd octets de %s\n", n, inet_ntoa(from.sin_addr));
+    handle_packet(p, buf, n, &from);
+        //-DEBUG
+    // struct icmphdr *icmp = (struct icmphdr *)(buf + 20);
+    // printf("type = %d\n", icmp->type);
 }
 
 /**
