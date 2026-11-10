@@ -37,6 +37,12 @@ typedef struct s_ping {
     long                    sent;//nb packages send
 
     long                    received; //how many answer
+    
+    double                  rtt_min;
+    double                  rtt_max;
+    double                  rtt_sum;
+    double                  rtt_sum2;
+
 }   t_ping;
 
 // struct icmphdr{
