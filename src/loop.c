@@ -49,9 +49,6 @@ static void handle_packet(t_ping *p, char *buf, ssize_t n, struct sockaddr_in *f
     }
     else if (icmp->type == ICMP_TIME_EXCEEDED || icmp->type == ICMP_DEST_UNREACH)
         print_error(p, icmp, n - ip_len, from);
-    if(ntohs(icmp->un.echo.id) != p->id)
-        return;
-    print_reply(p, ip, icmp, n - ip_len, from);
 }
 
 static void read_package(t_ping *p){
