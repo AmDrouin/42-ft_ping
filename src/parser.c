@@ -19,6 +19,10 @@ static void parse_long_option(char *av, t_ping *p){
         print_help();
     else if (strcmp(av, "--verbose") == 0)
         p->verbose = true;
+    else if (strcmp(av, "--usage") == 0){
+        printf("Usage: ping [-v?] [--verbose] [--help] [--usage] HOST\n");
+        exit (0);
+    }
     else {
         fprintf(stderr, "ft_ping: unrecognized option '%s'\n", av);
         fprintf(stderr, "Try 'ft_ping --help' or 'ft_ping --usage' for more information.\n");

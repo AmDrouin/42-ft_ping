@@ -16,7 +16,7 @@ int main(int ac, char **av){
     // printf("DEBUG-- HOST: %s, VERBOSE: %d\n", p.host, p.verbose);
     resolve_host(&p);
     create_socket(&p);
-    printf("PING %s (%s): %d data bytes", p.host, p.ip_str, 56);
+    printf("PING %s (%s): %d data bytes", p.host, p.ip_str, DATA_SIZE);
     if (p.verbose)
         printf(", id 0x%04x = %u", p.id, p.id);
     printf("\n");
