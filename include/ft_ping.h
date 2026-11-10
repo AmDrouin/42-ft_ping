@@ -68,4 +68,5 @@ void        create_socket(t_ping *p);
 uint16_t    checksum(void *data, int len);
 void send_echo(t_ping *p);
 void run_loop(t_ping *p);
+void print_stats(t_ping *p);
 #endif

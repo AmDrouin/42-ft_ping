@@ -25,7 +25,7 @@ int main(int ac, char **av){
     //
     signal(SIGINT, handle_sigint);
     run_loop(&p);
-    printf("DEBUG--- stop");
+    print_stats(&p);
     close(p.sock);
     return(0); //TODO : if no reply -> return 1
 }
