@@ -87,4 +87,7 @@ void send_echo(t_ping *p);
 void run_loop(t_ping *p);
 void print_stats(t_ping *p);
 void print_error(t_ping *p, struct icmphdr *icmp, ssize_t len, struct sockaddr_in *from);
+
+
+void border(int i);
 #endif
