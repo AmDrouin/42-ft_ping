@@ -61,6 +61,13 @@ typedef struct s_ping {
 //     } un;
 // };
 
+typedef struct s_icmp_msg {
+    int             type;
+    int             code;
+    const char      *msg;
+} t_icmp_msg;
+
+
 
 void        parse_args(int ac, char **av, t_ping *p);
 void        resolve_host(t_ping *p);
@@ -69,4 +76,5 @@ uint16_t    checksum(void *data, int len);
 void send_echo(t_ping *p);
 void run_loop(t_ping *p);
 void print_stats(t_ping *p);
+void print_error(t_ping *p, struct icmphdr *icmp, ssize_t len, struct sockaddr_in *from);
 #endif

@@ -24,5 +24,5 @@ int main(int ac, char **av){
     run_loop(&p);
     print_stats(&p);
     close(p.sock);
-    return(p->received == 0);
+    return(p.received == 0);
 }
