@@ -22,6 +22,9 @@
 # define PACKET_SIZE 64
 # define DATA_SIZE 56
 
+#include <signal.h>
+
+extern volatile sig_atomic_t g_stop;
 
 typedef struct s_ping {
     char                    *host; //host argument

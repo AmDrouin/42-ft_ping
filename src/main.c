@@ -1,5 +1,6 @@
 #include "ft_ping.h"
 
+volatile sig_atomic_t g_stop = 0;
 
 int main(int ac, char **av){
     t_ping p;
@@ -16,7 +17,9 @@ int main(int ac, char **av){
     //need to be in the loop
     //send_echo(&p);
     //
+    signal(SIGINT, handle_sigint);
     run_loop(&p);
+    printf("DEBUG--- stop");
     close(p.sock);
-    return(0);
+    return(0); //TODO : if no reply -> return 1
 }

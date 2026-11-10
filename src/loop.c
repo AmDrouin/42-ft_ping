@@ -3,6 +3,12 @@
 #include <string.h>
 #include <sys/select.h>
 
+static void handle_sigint(int sig)
+{
+    (void)sig;
+    g_stop = 1;
+}
+
 static double get_time(){
     struct timeval tv;
 
@@ -75,7 +81,7 @@ void wait_reply(t_ping *p, double deadline){
     fd_set fds;
     struct timeval tv;
 
-    while((left_time = deadline - get_time()) > 0){
+    while((left_time = deadline - get_time()) > 0 && !g_stop){
         tv.tv_sec = (long)(left_time /1000);
         tv.tv_usec= (long)(left_time * 1000) % 1000000;
         FD_ZERO(&fds);
@@ -90,7 +96,7 @@ void wait_reply(t_ping *p, double deadline){
 void run_loop(t_ping *p){
     double start;
 
-    while(1){
+    while(!g_stop){
         start = get_time();
         send_echo(p);
         wait_reply(p, start + 1000);
