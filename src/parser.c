@@ -3,8 +3,9 @@
 static void print_help(){
     printf("Usage: ping [OPTION...] HOST ...\n");
     printf("Send ICMP ECHO_REQUEST packets to network hosts.\n");
-    printf(" -v, --verbose          verbose output\n");
-    printf(" -?, --help             give this help list\n");
+    printf("  -v, --verbose                  verbose output\n");
+    printf("  -?, --help                     give this help list\n");
+    printf("    , --usage                    give a short usage message\n");
     exit(0);
 }
 
