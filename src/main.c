@@ -2,6 +2,12 @@
 
 volatile sig_atomic_t g_stop = 0;
 
+static void handle_sigint(int sig)
+{
+    (void)sig;
+    g_stop = 1;
+}
+
 int main(int ac, char **av){
     t_ping p;
 

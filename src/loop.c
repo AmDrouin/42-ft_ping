@@ -3,11 +3,6 @@
 #include <string.h>
 #include <sys/select.h>
 
-static void handle_sigint(int sig)
-{
-    (void)sig;
-    g_stop = 1;
-}
 
 static double get_time(){
     struct timeval tv;
@@ -16,7 +11,7 @@ static double get_time(){
     return (tv.tv_sec * 1000.0 + tv.tv_usec / 1000.0);
 }
 
-static void print_reply(t_ping *p, struct iphdr *ip, struct icmphdr *icmp, ssize_ icmp_len, struct sockaddr_in *from){
+static void print_reply(t_ping *p, struct iphdr *ip, struct icmphdr *icmp, ssize_t icmp_len, struct sockaddr_in *from){
     
     struct timeval  sent;
     double          rtt;
