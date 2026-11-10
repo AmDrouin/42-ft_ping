@@ -20,12 +20,9 @@ int main(int ac, char **av){
     if (p.verbose)
         printf(", id 0x%04x = %u", p.id, p.id);
     printf("\n");
-    //need to be in the loop
-    //send_echo(&p);
-    //
     signal(SIGINT, handle_sigint);
     run_loop(&p);
     print_stats(&p);
     close(p.sock);
-    return(0); //TODO : if no reply -> return 1
+    return(p->received == 0);
 }
