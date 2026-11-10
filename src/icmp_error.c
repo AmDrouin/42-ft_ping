@@ -1,4 +1,5 @@
 #include "ft_ping.h"
+#include <netinet/ip_icmp.h>
 #include <sys/types.h>
 
 static const t_icmp_msg g_icmp_msgs[] ={
@@ -7,7 +8,7 @@ static const t_icmp_msg g_icmp_msgs[] ={
     {ICMP_DEST_UNREACH, ICMP_NET_UNREACH, "Destination Net Unreachable"},
     {ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, "Destination Host Unreachable"},
     {ICMP_DEST_UNREACH, ICMP_PROT_UNREACH, "Destination Protocol Unreachable"},
-    {ICMP_DEST_UNREACH, ICMP_PROT_UNREACH, "Destination Port Unreachable"},
+    {ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, "Destination Port Unreachable"},
     {ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED, "Fragmentation needed and DF set"},
     {ICMP_DEST_UNREACH, ICMP_SR_FAILED,"Source Route Failed"},
     {0, 0, NULL}
