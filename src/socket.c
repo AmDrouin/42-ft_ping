@@ -41,6 +41,11 @@ void send_echo(t_ping *p){
     icmp->checksum = 0;
     icmp->checksum = checksum(package, sizeof(package));
 
+    if(DEBUG){
+        DEBUG_PRINT("Sent packet");
+        graduation();
+        print_icmp(icmp);
+    }
     if (sendto(p->sock, package, sizeof(package), 0, (struct sockaddr *)&p->dest, sizeof(p->dest)) < 0)
         fprintf(stderr, "ft_ping: sending packet: %s\n", strerror(errno));
     else

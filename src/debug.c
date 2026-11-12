@@ -1,4 +1,6 @@
 #include "ft_ping.h"
+#include <stdint.h>
+#include <stdio.h>
 
 #define CYAN        "\e[0;36m"
 #define GREEN       "\e[0;32m"
@@ -8,7 +10,35 @@
 
 #define PACKAGE_SIZE   32
 
-void dbg_graduation(void){
+/**
+ * @brief picks the value's colour from the size of the field
+ */
+static const char *color(int bits){
+    if (bits <= 8)
+        return CYAN;
+    if (bits <= 16)
+        return BLUE;
+    return RED;
+}
+
+static void cell(int bits, uint32_t value){
+    int width = 2 * bits -1 ;
+    int digits = (bits +3 ) /4;
+    int len = 2 + digits;
+    int left = (width - len) /2;
+    int right = width - len -left;
+
+    if (left < 0)
+        left = 0;
+    if (right < 0)
+        right = 0;
+    fprintf(stderr, "%*s0x%s%0*x%s%*s|", left, "", color(bits), digits, value, COLOR_RESET, right, "");
+}
+
+/**
+ * @brief prints the bit graduation
+ */
+void graduation(void){
     fprintf(stderr, " ");
     for (int i = 0; i < 32; i++){
         if (i % 10 == 0)
@@ -24,15 +54,43 @@ void dbg_graduation(void){
 
 /**
  * @brief write a border +-+
- * 
- * @param i how many bits do you need ?? 
- * @warning i > 0
  */
-void border(int bits){
+static void border(int bits){
     fprintf(stderr, "+");
     for(int i = 0; i < bits; i++)
         fprintf(stderr, "-+");
-    fprintf(stderr, "\n\n");
-    dbg_graduation();
+    fprintf(stderr, "\n");
 }
 
+static void draw_fields(const t_field *fields, int n){
+    int used = 0;
+ 
+    border(PACKAGE_SIZE);
+    fprintf(stderr, "|");
+    for (int i = 0; i < n; i++){
+        cell(fields[i].bits, fields[i].value);
+        used += fields[i].bits;
+        if (used == 32){
+            fprintf(stderr, "\n");
+            border(32);
+            used = 0;
+            if (i + 1 < n)
+                fprintf(stderr, "|");
+        }
+    }
+    if (used != 0)
+        fprintf(stderr, "\n[DEBUG] draw_fields: line not complete (%d/32 bits)\n", used);
+}
+
+void print_icmp(struct icmphdr *icmp){
+    t_field fields[] = {
+        {8,  icmp->type},
+        {8,  icmp->code},
+        {16, ntohs(icmp->checksum)},
+        {16, ntohs(icmp->un.echo.id)},
+        {16, ntohs(icmp->un.echo.sequence)},
+    };
+
+    fprintf(stderr, "ICMP: Echo or Echo Reply Message\n");
+    draw_fields(fields, sizeof(fields) / sizeof(fields[0]));
+}

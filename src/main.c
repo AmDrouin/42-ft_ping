@@ -11,7 +11,6 @@ static void handle_sigint(int sig)
 
 int main(int ac, char **av){
     t_ping p;
-    border(64);
     memset(&p, 0, sizeof(p));
     parse_args(ac, av, &p);
     DEBUG_PRINT("HOST: %s, VERBOSE: %d", p.host, p.verbose);
