@@ -1,7 +1,14 @@
 NAME    = ft_ping
 CC      = cc
 CFLAGS  = -Wall -Wextra -Werror
-SRCS    = src/main.c src/parser.c src/stats.c src/resolve.c src/socket.c src/loop.c src/icmp_error.c
+SRCS    = src/main.c \
+			src/parser.c \
+			src/stats.c \
+			src/resolve.c \
+			src/socket.c \
+			src/loop.c \
+			src/icmp_error.c \
+			src/debug.c 
 OBJS    = $(SRCS:src/%.c=objs/%.o)
 
 all: $(NAME)

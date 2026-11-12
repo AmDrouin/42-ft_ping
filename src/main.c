@@ -1,6 +1,7 @@
 #include "ft_ping.h"
 
 volatile sig_atomic_t g_stop = 0;
+bool DEBUG = false;
 
 static void handle_sigint(int sig)
 {
@@ -10,10 +11,9 @@ static void handle_sigint(int sig)
 
 int main(int ac, char **av){
     t_ping p;
-
     memset(&p, 0, sizeof(p));
     parse_args(ac, av, &p);
-    // printf("DEBUG-- HOST: %s, VERBOSE: %d\n", p.host, p.verbose);
+    DEBUG_PRINT("HOST: %s, VERBOSE: %d", p.host, p.verbose);
     resolve_host(&p);
     create_socket(&p);
     printf("PING %s (%s): %d data bytes", p.host, p.ip_str, DATA_SIZE);

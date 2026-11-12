@@ -21,10 +21,21 @@
 
 # define PACKET_SIZE 64
 # define DATA_SIZE 56
+#define TTL 64
 
 #include <signal.h>
 
 extern volatile sig_atomic_t g_stop;
+
+extern bool DEBUG;
+
+#define DEBUG_PRINT(str, ...)\
+    do{ \
+        if(DEBUG) { \
+            fprintf(stderr, "[DEBUG] " str "\n", ##__VA_ARGS__);\
+        } \
+    } while(0)
+
 
 typedef struct s_ping {
     char                    *host; //host argument
@@ -67,6 +78,10 @@ typedef struct s_icmp_msg {
     const char      *msg;
 } t_icmp_msg;
 
+typedef struct s_field {
+    int         bits;  
+    uint32_t    value;  
+}   t_field;
 
 
 void        parse_args(int ac, char **av, t_ping *p);
@@ -77,4 +92,10 @@ void send_echo(t_ping *p);
 void run_loop(t_ping *p);
 void print_stats(t_ping *p);
 void print_error(t_ping *p, struct icmphdr *icmp, ssize_t len, struct sockaddr_in *from);
+
+void graduation(void);
+void print_icmp(struct icmphdr *icmp);
+void print_ip(struct iphdr *ip);
+void hexdump(const unsigned char *data, int len);
+void build_sent_ip(t_ping *p, struct iphdr *ip);
 #endif
