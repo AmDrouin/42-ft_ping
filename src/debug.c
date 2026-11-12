@@ -10,6 +10,20 @@
 
 #define PACKAGE_SIZE   32
 
+void hexdump(const unsigned char *data, int len){
+    for(int i = 0; i < len; i++){
+        if(i%16 == 0){
+            if(i != 0)
+                fprintf(stderr, "\n");
+            fprintf(stderr, "0x%04x: ", i);
+        }
+        fprintf(stderr, "%02x ", data[i]);
+        if(i % 16 == 7)
+            fprintf(stderr, " ");
+    }
+    fprintf(stderr, "\n\n");
+}
+
 /**
  * @brief picks the value's colour from the size of the field
  */
@@ -112,6 +126,6 @@ void print_ip(struct iphdr *ip){
         {32, ntohl(ip->daddr)},
     };
  
-    fprintf(stderr, "Internet Header Format\n");
+    fprintf(stderr, "                   Internet Header Format\n");
     draw_fields(fields, sizeof(fields) / sizeof(fields[0]));
 }

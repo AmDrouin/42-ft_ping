@@ -47,6 +47,8 @@ static void handle_packet(t_ping *p, char *buf, ssize_t n, struct sockaddr_in *f
         graduation();
         print_ip(ip);
         print_icmp(icmp);
+        DEBUG_PRINT("Payload\n");
+        hexdump((unsigned char *)icmp + 8, DATA_SIZE);
         DEBUG_PRINT("Received packet ------- END");
     }
     if (icmp->type == ICMP_ECHOREPLY){

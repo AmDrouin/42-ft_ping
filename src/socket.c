@@ -45,6 +45,8 @@ void send_echo(t_ping *p){
         DEBUG_PRINT("Sent packet ------- START");
         graduation();
         print_icmp(icmp);
+        DEBUG_PRINT("Payload\n");
+        hexdump((unsigned char *)package + 8, DATA_SIZE);
         DEBUG_PRINT("Sent packet ------- END");
     }
     if (sendto(p->sock, package, sizeof(package), 0, (struct sockaddr *)&p->dest, sizeof(p->dest)) < 0)
