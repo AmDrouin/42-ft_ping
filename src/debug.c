@@ -94,3 +94,24 @@ void print_icmp(struct icmphdr *icmp){
     fprintf(stderr, "ICMP: Echo or Echo Reply Message\n");
     draw_fields(fields, sizeof(fields) / sizeof(fields[0]));
 }
+
+void print_ip(struct iphdr *ip){
+    uint16_t frag = ntohs(ip->frag_off);
+     t_field fields[] = {
+        {4,  ip->version},
+        {4,  ip->ihl},
+        {8,  ip->tos},
+        {16, ntohs(ip->tot_len)},
+        {16, ntohs(ip->id)},
+        {3,  frag >> 13},           // flags: the 3 high bits
+        {13, frag & 0x1fff},        // fragment offset: the 13 low bits
+        {8,  ip->ttl},
+        {8,  ip->protocol},
+        {16, ntohs(ip->check)},
+        {32, ntohl(ip->saddr)},
+        {32, ntohl(ip->daddr)},
+    };
+ 
+    fprintf(stderr, "Internet Header Format\n");
+    draw_fields(fields, sizeof(fields) / sizeof(fields[0]));
+}

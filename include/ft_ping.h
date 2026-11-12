@@ -94,4 +94,5 @@ void print_error(t_ping *p, struct icmphdr *icmp, ssize_t len, struct sockaddr_i
 
 void graduation(void);
 void print_icmp(struct icmphdr *icmp);
+void print_ip(struct iphdr *ip);
 #endif
