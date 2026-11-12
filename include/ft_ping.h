@@ -21,6 +21,7 @@
 
 # define PACKET_SIZE 64
 # define DATA_SIZE 56
+#define TTL 64
 
 #include <signal.h>
 
@@ -96,4 +97,5 @@ void graduation(void);
 void print_icmp(struct icmphdr *icmp);
 void print_ip(struct iphdr *ip);
 void hexdump(const unsigned char *data, int len);
+void build_sent_ip(t_ping *p, struct iphdr *ip);
 #endif

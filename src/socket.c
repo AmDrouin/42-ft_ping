@@ -44,6 +44,9 @@ void send_echo(t_ping *p){
     if(DEBUG){
         DEBUG_PRINT("Sent packet ------- START");
         graduation();
+        struct iphdr ip;
+        build_sent_ip(p, &ip);
+        print_ip(&ip);
         print_icmp(icmp);
         DEBUG_PRINT("Payload\n");
         hexdump((unsigned char *)package + 8, DATA_SIZE);

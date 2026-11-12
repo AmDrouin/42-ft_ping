@@ -8,7 +8,47 @@
 #define RED         "\e[0;31m"
 #define COLOR_RESET "\e[0m"
 
-#define PACKAGE_SIZE   32
+#define DATA_ICMP   32
+
+static uint8_t get_ttl(int sock){
+    int ttl = TTL;
+    socklen_t   len = sizeof(ttl);
+
+    if(getsockopt(sock, IPPROTO_IP, IP_TTL, &ttl, &len) < 0)
+        return TTL;
+    return(uint8_t)ttl;
+}
+
+static uint32_t get_source_addr(struct sockaddr_in *dest){
+    struct sockaddr_in  local;
+    socklen_t           len = sizeof(local);
+    int                 fd;
+
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(fd < 0)
+        return 0;
+    if (connect(fd, (struct sockaddr *)dest, sizeof(*dest)) < 0
+        || getsockname(fd, (struct sockaddr *)&local, &len) < 0){
+        close(fd);
+        return 0;
+    }
+    close(fd);
+    return local.sin_addr.s_addr;
+}
+
+void build_sent_ip(t_ping *p, struct iphdr *ip){
+    memset(ip, 0, sizeof(*ip));
+    ip->version = 4;
+    ip->ihl = 5;
+    ip->tot_len = htons(ip->ihl * 4 + PACKET_SIZE);
+    ip->frag_off = htons(0x4000);
+    ip->ttl = get_ttl(p->sock);
+    ip->protocol = IPPROTO_ICMP;
+    ip->saddr = get_source_addr(&p->dest);
+    ip->daddr = p->dest.sin_addr.s_addr;
+    ip->check = checksum(ip, ip->ihl * 4);
+
+}
 
 void hexdump(const unsigned char *data, int len){
     for(int i = 0; i < len; i++){
@@ -79,7 +119,7 @@ static void border(int bits){
 static void draw_fields(const t_field *fields, int n){
     int used = 0;
  
-    border(PACKAGE_SIZE);
+    border(DATA_ICMP);
     fprintf(stderr, "|");
     for (int i = 0; i < n; i++){
         cell(fields[i].bits, fields[i].value);
