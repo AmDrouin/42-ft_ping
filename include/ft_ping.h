@@ -19,9 +19,9 @@
 #include <netinet/ip_icmp.h>
 #include <sys/time.h>
 
-# define PACKET_SIZE 64
-# define DATA_SIZE 56
-#define TTL 64
+#   define PACKET_SIZE 64
+#   define DATA_SIZE 56
+#   define TTL 64
 
 #include <signal.h>
 

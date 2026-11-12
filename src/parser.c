@@ -6,6 +6,7 @@ static void print_help(){
     printf("  -v, --verbose                  verbose output\n");
     printf("  -?, --help                     give this help list\n");
     printf("    , --usage                    give a short usage message\n");
+    printf("    , --DEBUG                    bonus to see inside every package\n");
     exit(0);
 }
 
@@ -21,7 +22,7 @@ static void parse_long_option(char *av, t_ping *p){
     else if (strcmp(av, "--verbose") == 0)
         p->verbose = true;
     else if (strcmp(av, "--usage") == 0){
-        printf("Usage: ping [-v?] [--verbose] [--help] [--usage] HOST\n");
+        printf("Usage: ping [-v?] [--verbose] [--help] [--usage] [--DEBUG] HOST\n");
         exit (0);
     }
     else if(strcmp(av, "--DEBUG") == 0){
