@@ -30,11 +30,10 @@ extern volatile sig_atomic_t g_stop;
 extern bool DEBUG;
 
 #define DEBUG_PRINT(str, ...)\
-    do{ \
-        if(DEBUG) { \
-            fprintf(stderr, "[DEBUG] " str "\n", ##__VA_ARGS__);\
-        } \
-    } while(0)
+    if(DEBUG) { \
+        fprintf(stderr, "[DEBUG] " str "\n", ##__VA_ARGS__);\
+    } \
+
 
 
 typedef struct s_ping {

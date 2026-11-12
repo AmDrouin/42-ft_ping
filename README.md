@@ -1,13 +1,97 @@
 # 42-ft_ping
-Recoding the ping command. An introduction to communication (TCP/IP) between two machines on a network.
-The project must be in C and compile with a Makefile...
+Recoding the ping command. An introduction to communication (TCP/IP) between two machines on a network. The project must be in C and compile with a Makefile...
 
+The reference implementation is **`ping` from inetutils-2.0** (check with `ping -v`): except for the RTT values and the revere DNS resolution, the output of `ft_ping` must be formatted exactly like it.
+
+
+---
+
+## Table of contents
+
+1. [Usage](#usage)
+2. [Project structure](#project-structure)
+3. [How it works](#how-it-works)
+4. [Key concepts](#key-concepts)
+5. [Bonus: `--DEBUG` mode](#bonus---debug-mode)
+6. [Testing](#testing)
+7. [Development environment](#development-environment)
+8. [References](#references)
+
+ ---
+
+## Usage
 
 ### How to compile and execute ?
  ```bash
- make
- sudo ./ft_ping [-v] [-?] <host>
+ make           # build ./ft_ping
+ make clean     # remove object files (objs/)
+ make fclean    #remove object files and the binary
+ make re        #rebuild from scratch
+
+ sudo ./ft_ping [options] <host>
  ```
+
+`sudo` is required: `ft_ping` opens a ***raw socket***, which needs root privilieges. 
+
+
+### Options 
+
+| Option | Description |
+|---|---|
+| `-v`, `--verbose` | Verbose output: shows the packet id, and dumps the IP/ICMP headers when an ICMP error is received |
+| `-?`, `--help` | Print the help and exit |
+| `--usage` | Print a short usage message and exit |
+| `--DEBUG` | **Bonus**: draws every sent/received packet (IP + ICMP headers, payload hexdump) on `stderr` | 
+
+`<host>` can be an IPv4 address (`8.8.8.8`), a hostname (`localhost`) or a FQDN (`google.com`).
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | At least one reply was received |
+| `1` | No reply received, unknown host, or socket error |
+| `64` | Usage error (missing host, invalid option) |
+
+## Project structure
+
+```text
+
+.
+├── Makefile
+├── include/
+│   └── ft_ping.h       # includes, constants, t_ping struct, prototypes
+└── src/
+    ├── main.c          # entry point, SIGINT handler, "PING ..." header line
+    ├── parser.c        # command-line options (-v, -?, --help, --usage, --DEBUG)
+    ├── resolve.c       # hostname -> IPv4 with getaddrinfo()
+    ├── socket.c        # raw socket, checksum, building and sending the Echo Request
+    ├── loop.c          # main loop: send every second, wait with select(), read replies, RTT
+    ├── icmp_error.c    # ICMP errors (Time Exceeded, Destination Unreachable) and verbose dump
+    ├── stats.c         # final statistics (loss, min/avg/max/stddev)
+    └── debug.c         # bonus: --DEBUG packet drawings and hexdump
+```
+
+## How it works 
+
+```text
+parse_args()  ->  resolve_host()  ->  create_socket()  ->  print "PING ..."
+                                                                  |
+                                     +----------------------------+
+                                     v
+                 +---------> send_echo()          build ICMP Echo Request + timestamp, sendto()
+                 |               |
+                 |               v
+                 |          wait_reply()          select() until 1 s has passed since the send
+                 |               |                  -> recvfrom() -> handle_packet()
+                 |               |                       Echo Reply with our id  -> print_reply()
+                 |               |                       Time Exceeded / Unreach -> print_error()
+                 +---------------+
+                     until Ctrl+C (g_stop = 1)
+                                     |
+                                     v
+                               print_stats()
+```
 
 ## Development environment
 
