@@ -71,9 +71,6 @@ static void read_package(t_ping *p){
     if(n < 0)
         return;
     handle_packet(p, buf, n, &from);
-        //-DEBUG
-    // struct icmphdr *icmp = (struct icmphdr *)(buf + 20);
-    // printf("type = %d\n", icmp->type);
 }
 
 /**
